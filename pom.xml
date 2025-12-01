@@ -20,23 +20,19 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Version de Lombok gestionada por el parent, pero mantenemos para el plugin de compilación -->
+        <lombok.version>1.18.30</lombok.version>
     </properties>
 
     <dependencies>
-        <!-- Spring Boot Core -->
+        <!-- Spring Boot Core y Persistencia -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -61,13 +57,11 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Spring Security -->
+        <!-- Spring Security y JWT -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
-        <!-- JWT -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -86,18 +80,12 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- GRAPHQL - Dependencias añadidas para el laboratorio -->
+        <!-- GraphQL (Asegura la funcionalidad de Spring for GraphQL) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-graphql</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.graphql-java-kickstart</groupId>
-            <artifactId>graphql-java-kickstart</artifactId>
-            <version>12.0.0</version>
-        </dependency>
-
-
+        <!-- **IMPORTANTE: Se eliminó graphql-java-kickstart:12.0.0, ya que es redundante y conflictivo con spring-boot-starter-graphql en Spring Boot 3.** -->
 
         <!-- Observabilidad -->
         <dependency>
@@ -123,7 +111,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.42</version>
+            <!-- Dejamos que el parent de Spring Boot 3.2.0 gestione la versión para mayor estabilidad.
+                 Si necesitas una versión específica, puedes añadir <version>1.18.30</version> -->
             <scope>provided</scope>
         </dependency>
 
@@ -132,23 +121,22 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <!-- Incluye JUnit 5, Mockito y Spring Test por defecto. -->
         </dependency>
+        <!-- Las siguientes dependencias de test ya están incluidas o gestionadas por spring-boot-starter-test, se mantienen para claridad de scope pero se eliminan las versiones explícitas -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.9.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.5.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.5.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -171,7 +159,8 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.42</version>
+                            <!-- Asegura que la versión del plugin coincida con la usada -->
+                            <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
@@ -215,7 +204,8 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.22.0</version>
                 <configuration>
-                    <targetJdk>11</targetJdk>
+                    <!-- Actualizado a 17 para coincidir con el <java.version> -->
+                    <targetJdk>17</targetJdk>
                 </configuration>
             </plugin>
 

@@ -1,0 +1,80 @@
+# Archivo: src/main/resources/graphql/schema.graphqls
+
+type Ticket {
+    id: ID!
+    titulo: String!
+    descripcion: String!
+    estado: EstadoTicket!
+    prioridad: PrioridadTicket!
+    clienteId: ID!
+    fechaCreacion: String!
+    fechaActualizacion: String
+    asignadoA: String
+    comentarios: [Comentario!]!
+}
+
+type Comentario {
+    id: ID!
+    ticketId: ID!
+    autor: String!
+    contenido: String!
+    fechaCreacion: String!
+}
+
+enum EstadoTicket {
+    ABIERTO
+    EN_PROGRESO
+    CERRADO
+    PENDIENTE
+}
+
+enum PrioridadTicket {
+    BAJA
+    MEDIA
+    ALTA
+    CRITICA
+}
+
+type Query {
+    obtenerTickets: [Ticket!]!
+    obtenerTicketPorId(id: ID!): Ticket
+    obtenerTicketsPorEstado(estado: EstadoTicket!): [Ticket!]!
+    obtenerTicketsPorCliente(clienteId: ID!): [Ticket!]!
+    contarTicketsPorEstado: [ContadorTickets!]!
+}
+
+type ContadorTickets {
+    estado: EstadoTicket!
+    total: Int!
+}
+
+input CrearTicketInput {
+    titulo: String!
+    descripcion: String!
+    prioridad: PrioridadTicket!
+    clienteId: ID!
+    asignadoA: String
+}
+
+input ActualizarTicketInput {
+    id: ID!
+    titulo: String
+    descripcion: String
+    estado: EstadoTicket
+    prioridad: PrioridadTicket
+    asignadoA: String
+}
+
+input CrearComentarioInput {
+    ticketId: ID!
+    autor: String!
+    contenido: String!
+}
+
+type Mutation {
+    crearTicket(input: CrearTicketInput!): Ticket!
+    actualizarTicket(input: ActualizarTicketInput!): Ticket!
+    cambiarEstadoTicket(id: ID!, estado: EstadoTicket!): Ticket!
+    eliminarTicket(id: ID!): Boolean!
+    agregarComentario(input: CrearComentarioInput!): Comentario!
+}
